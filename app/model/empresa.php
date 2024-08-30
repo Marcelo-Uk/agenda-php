@@ -52,4 +52,16 @@ class Empresa {
         $this->setTelefone();
     }
 
+    function cadastrar() {
+
+    }
+
+    function atualizar(){
+
+    }
+
+    function apagar(){
+
+    }
+
 }
