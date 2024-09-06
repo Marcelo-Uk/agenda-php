@@ -10,11 +10,21 @@
         private $dbname;
         private $conn;
 
-        function __construct(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) {
+        private static $instance = null;
+
+        function __construct() {
             $this->servername = DB_HOST;
-            $this->username = DB_USERNAME;
+            $this->username = DB_USER;
             $this->password = DB_PASSWORD;
             $this->dbname = DB_NAME;
+        }
+
+        //Método para obter a instância única da classe
+        public static function getInstance() {
+            if (is_null(self::$instance)) {
+                self::$instance = new self();
+            }
+            return self::$instance;
         }
 
         function connect(){
@@ -33,5 +43,10 @@
             }
         }
 
+        //Impedir que a instancia seja clonada
+        private function __clone(){}
+
+        //Impedir que a instancia seja desserializada
+        private function __wakeup(){}
     }
 ?>

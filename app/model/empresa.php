@@ -1,5 +1,7 @@
 <?php
 
+include_once 'Database.php';
+
 class Empresa {
 
     private $id;
@@ -53,15 +55,63 @@ class Empresa {
     }
 
     function cadastrar() {
+        $db = Database::getInstance();
+        $conn = $db->connect();
 
+        //Preparar a consulta SQL
+        $stmt = $conn->prepare("INSERT INTO empresa (nome, cnpj, endereco, telefone) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $this->nome, $this->cnpj, $this->endereco, $this->telefone);
+
+        //Executa a consulta SQL
+        if ($stmt->execute()) {
+            $stmt->close();
+            $db->closeConnection();
+            return true;
+        }else {
+            $stmt->close();
+            $db->closeConnection();
+            return false;
+        }
     }
 
     function atualizar(){
+        $db = Database::getInstance();
+        $conn = $db->connect();
 
+        //Preparar a consulta SQL
+        $stmt = $conn->prepare("UPDATE empresa SET (nome = ?, cnpj = ?, endereco = ?, telefone = ?) WHERE id = ?");
+        $stmt->bind_param("ssssi", $this->nome, $this->cnpj, $this->endereco, $this->telefone);
+
+        //Executa a consulta SQL
+        if ($stmt->execute()) {
+            $stmt->close();
+            $db->closeConnection();
+            return true;
+        }else {
+            $stmt->close();
+            $db->closeConnection();
+            return false;
+        }
     }
 
     function apagar(){
+        $db = Database::getInstance();
+        $conn = $db->connect();
 
+        //Preparar a consulta SQL
+        $stmt = $conn->prepare("DELETE FROM empresa WHERE id= ?");
+        $stmt->bind_param("i", $this->id);
+
+        //Executa a consulta SQL
+        if ($stmt->execute()) {
+            $stmt->close();
+            $db->closeConnection();
+            return true;
+        }else {
+            $stmt->close();
+            $db->closeConnection();
+            return false;
+        }
     }
 
 }
